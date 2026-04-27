@@ -5,6 +5,7 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
+from zoneinfo import ZoneInfo
 
 app = FastAPI()
 
@@ -24,12 +25,12 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 # ===== 靜態檔掛載 =====
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
-PUBLIC_BASE_URL = "https://eloquent-footprint-applaud.ngrok-free.dev"
+PUBLIC_BASE_URL = "https://temple-drawing-api.onrender.com"
 
 
 @app.get("/", response_class=HTMLResponse)
 async def homepage():
-    hero_image = "/uploads/廟宇logo.png"
+    hero_image = "/uploads/temple_logo.png"
 
     html = f"""
     <!DOCTYPE html>
@@ -316,7 +317,7 @@ async def upload_drawing(file: UploadFile = File(...)):
         "success": True,
         "filename": filename,
         "url": page_url,
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M")
+        "time": datetime.now(ZoneInfo("Asia/Taipei")).strftime("%Y-%m-%d %H:%M")
     }
 
 
